@@ -17,7 +17,7 @@ class Product(models.Model):
 
 
 class ProductGallery(models.Model):
-    media = models.FileField(upload_to='media')
+    media = models.FileField(upload_to='product')
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

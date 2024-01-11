@@ -1,0 +1,13 @@
+django==4.2.8
+python-decouple
+djangorestframework
+gunicorn
+psycopg2-binary
+Pillow
+django-modeltranslation
+drf-yasg
+django-cors-headers
+django-filter
+python-dateutil
+
+sentry-sdk[django]

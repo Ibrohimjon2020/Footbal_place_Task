@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: ./devops/backend/Dockerfile
+    restart: unless-stopped
+    entrypoint: /code/devops/backend/local-entrypoint.sh
+    env_file:
+      - ./.env
+    ports:
+      - 8000:8000
+    expose:
+      - 8000
+    volumes:
+      - static_volume:/code/backend/staticfiles
+      - media_volume:/code/backend/media
+      - .:/code
+    depends_on:
+      - db
+    
+
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: "boburbekbotirov868@gmail.com"  
+  #     PGADMIN_DEFAULT_PASSWORD: "supersecret"    
+  #   ports:
+  #     - "5050:80"  
+  #   depends_on:
+  #     - db  
+  #   restart: unless-stopped
+  #   volumes:
+  #     - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+  # pgadmin_data:

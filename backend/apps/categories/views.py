@@ -8,14 +8,31 @@ from .serializers import CategorySerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.prefetch_related("product_set").all()
     serializer_class = CategorySerializer
 
-    @swagger_auto_schema(manual_parameters=[
-        openapi.Parameter('limit', openapi.IN_QUERY, description="Har bir sahifada qaytariladigan natijalar soni", type=openapi.TYPE_INTEGER),
-        openapi.Parameter('offset', openapi.IN_QUERY, description="Natijalarni qaytarishni boshlash indeksi", type=openapi.TYPE_INTEGER),
-        openapi.Parameter('all', openapi.IN_QUERY, description="Barcha kategoriyalarni qaytaradi. Qiymati 'true' bo'lsa, pagination qo'llanilmaydi.", type=openapi.TYPE_BOOLEAN),
-    ])
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "limit",
+                openapi.IN_QUERY,
+                description="Har bir sahifada qaytariladigan natijalar soni",
+                type=openapi.TYPE_INTEGER,
+            ),
+            openapi.Parameter(
+                "offset",
+                openapi.IN_QUERY,
+                description="Natijalarni qaytarishni boshlash indeksi",
+                type=openapi.TYPE_INTEGER,
+            ),
+            openapi.Parameter(
+                "all",
+                openapi.IN_QUERY,
+                description="Barcha kategoriyalarni qaytaradi. Qiymati 'true' bo'lsa, pagination qo'llanilmaydi.",
+                type=openapi.TYPE_BOOLEAN,
+            ),
+        ]
+    )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 

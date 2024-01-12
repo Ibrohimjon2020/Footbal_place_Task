@@ -1,10 +1,6 @@
-from django.shortcuts import render
-
-# Create your views here.
-# views.py
 from rest_framework import viewsets
-from .models import Product, ProductGallery
-from .serializers import ProductSerializer, ProductGallerySerializer
+from .models import Product
+from .serializers import ProductSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -21,9 +17,3 @@ class ProductViewSet(viewsets.ModelViewSet):
         # Aks holda, standart queryset (pagination bilan)
         else:
             return super().get_queryset()
-    
-
-
-class ProductGalleryViewSet(viewsets.ModelViewSet):
-    queryset = ProductGallery.objects.all()
-    serializer_class = ProductGallerySerializer

@@ -37,6 +37,8 @@ urlpatterns = [
 
     # Auth
     path("auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("api/v1/products/", include("apps.products.urls")),
+    path("api/v1/categories/", include("apps.categories.urls")),
     # path("gettoken/", CustomAuthToken.as_view()),
 ] + swagger_urlpatterns
 

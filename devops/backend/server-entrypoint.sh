@@ -16,8 +16,6 @@ python manage.py migrate
 echo 'Collecting static files...'
 python manage.py collectstatic --no-input
 
-echo 'Create recovery versions...'
-python manage.py createinitialrevisions
 
 echo 'Running server...'
 gunicorn config.wsgi:application --bind 0.0.0.0:8000

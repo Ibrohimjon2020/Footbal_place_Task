@@ -17,3 +17,4 @@ build-job:
     - git reset --hard origin/main || fail
     - git pull origin main || fail
     - docker compose -f docker-compose.prod.yml up --build -d
+    

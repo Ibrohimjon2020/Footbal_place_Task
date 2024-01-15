@@ -30,13 +30,9 @@ def trigger_error(request):
 urlpatterns = [
     # path("sentry-debug/", trigger_error),
     path("admin/", admin.site.urls),
-    # Pages
-    # API's
-    # path("api/v1/user/", include("apps.user.urls")),
-    # Organization
-
     # Auth
     path("auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("api/v1/account/", include("apps.accounts.urls")),
     path("api/v1/product/", include("apps.products.urls")),
     path("api/v1/category/", include("apps.categories.urls")),
     # path("gettoken/", CustomAuthToken.as_view()),

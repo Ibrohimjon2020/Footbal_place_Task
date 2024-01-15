@@ -2,8 +2,8 @@ from rest_framework import viewsets
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Product
-from .serializers import ProductSerializer
+from .models import Product, Banner
+from .serializers import ProductSerializer, BannerSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -47,3 +47,11 @@ class ProductViewSet(viewsets.ModelViewSet):
         # Aks holda, standart queryset (pagination bilan)
         else:
             return super().get_queryset()
+
+
+class BannerViewSet(viewsets.ModelViewSet):
+    queryset = Banner.objects.all()
+    serializer_class = BannerSerializer
+    
+
+

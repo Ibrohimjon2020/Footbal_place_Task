@@ -2,12 +2,12 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework import viewsets
 from .models import Category
-from .serializers import CategorySerializer
+from .serializers import CategorySerializer, CategoryCreateSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.prefetch_related("product_set").all()
-    serializer_class = CategorySerializer
+    # serializer_class = CategorySerializer
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -40,3 +40,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
             return Category.objects.all()
         else:
             return super().get_queryset()
+        
+    def get_serializer_class(self):
+        if self.action in ['list', 'retrieve']:
+            return CategorySerializer
+        return CategoryCreateSerializer
+
+

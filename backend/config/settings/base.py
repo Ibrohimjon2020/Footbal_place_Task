@@ -79,6 +79,7 @@ MIDDLEWARE = [
 CSRF_TRUSTED_ORIGINS = [
     "http://0.0.0.0:8000/",
     "http://0.0.0.0:8000",
+    "https://eb84-195-158-3-178.ngrok-free.app/"
 ]  # ngrok temporary url
 CORS_ALLOW_ALL_ORIGINS = True
 # CORS ORIGIN

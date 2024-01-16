@@ -28,7 +28,7 @@ class CustomAuthToken(ObtainAuthToken):
                 "token": token.key,
                 "user_id": user.pk,
                 "phone_number": user.phone_number,
-                # "image": user.image.url if user.image else None,
-                # "full_name": user.full_name,
+                # "address": user.address if user.image else None,
+                "address": user.address,
             }
         )

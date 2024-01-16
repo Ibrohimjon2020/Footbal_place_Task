@@ -6,7 +6,7 @@ from .models import User
 
 
 class AuthTokenSerializer(serializers.Serializer):
-    phone_number = serializers.EmailField(label=_("Phone Number"), write_only=True)
+    phone_number = serializers.CharField(label=_("Phone Number"), write_only=True)
     password = serializers.CharField(
         label=_("Password"),
         style={"input_type": "password"},
@@ -26,7 +26,7 @@ class AuthTokenSerializer(serializers.Serializer):
 
         user = authenticate(
             request=self.context.get("request"),
-            email=phone_number,
+            phone_number=phone_number,
             password=password,
         )
 
@@ -73,7 +73,9 @@ class AccountVerificationSerializer(serializers.Serializer):
     def validate(self, data):
         user = User.objects.filter(phone_number=data["phone_number"]).first()
         if user is None:
-            raise serializers.ValidationError("User with this phone number does not exist.")
+            raise serializers.ValidationError(
+                "User with this phone number does not exist."
+            )
         if user.verification_code != data["verification_code"]:
             raise serializers.ValidationError("Verification code is incorrect.")
 
@@ -92,11 +94,11 @@ class SetPasswordSerializer(serializers.Serializer):
         otp_code = data.get("otp_code")
 
         try:
-            user = User.objects.get(
-                phone_number=phone_number, otp_code=otp_code
-            )
+            user = User.objects.get(phone_number=phone_number, otp_code=otp_code)
         except User.DoesNotExist:
-            raise serializers.ValidationError("Invalid phone number or verification code.")
+            raise serializers.ValidationError(
+                "Invalid phone number or verification code."
+            )
 
         # Here, you can add any additional validation logic if needed
         # For example, you might want to check if the verification code is expired

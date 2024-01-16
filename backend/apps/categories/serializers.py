@@ -18,14 +18,25 @@ class ProductSerializer(serializers.ModelSerializer):
             "category",
         ]  # Kerakli maydonlarni tanlang
 
+class CategorySubSerializer(serializers.ModelSerializer):
+    products = serializers.SerializerMethodField()
+    class Meta:
+        model = Category
+        fields = ["id", "name", "created", "updated", "products"]
+    
+    def get_products(self, obj):
+        products = Product.objects.filter(category=obj)[
+            :5
+        ]  # Har bir kategoriya uchun 5 mahsulot
+        return ProductSerializer(products, many=True).data
 
 # CategorySerializer-ni yangilash
 class CategorySerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
-
+    parent = CategorySubSerializer(required=False)
     class Meta:
         model = Category
-        fields = ["id", "name", "created", "updated", "products"]
+        fields = ["id", "name", "parent", "created", "updated", "products"]
 
     def get_products(self, obj):
         products = Product.objects.filter(category=obj)[

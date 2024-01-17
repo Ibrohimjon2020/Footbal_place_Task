@@ -13,6 +13,17 @@ class Category(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
+    def get_descendants(self, include_self=True):
+        """
+        Bu funksiya berilgan kategoriyaning barcha bolalarini (va kerak bo'lsa o'zini ham)
+        rekursiv tarzda qaytaradi.
+        """
+        descendants = []
+        if include_self:
+            descendants.append(self)
+        for child in Category.objects.filter(parent=self):
+            descendants.extend(child.get_descendants(include_self=True))
+        return descendants
     def __str__(self):
         return self.name
 

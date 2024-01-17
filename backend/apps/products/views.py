@@ -33,6 +33,13 @@ class ProductViewSet(viewsets.ModelViewSet):
                 description="Barcha kategoriyalarni qaytaradi. Qiymati 'true' bo'lsa, pagination qo'llanilmaydi.",
                 type=openapi.TYPE_BOOLEAN,
             ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @swagger_auto_schema(
+        manual_parameters=[
             openapi.Parameter(
                 "pattern_category",
                 openapi.IN_QUERY,
@@ -41,8 +48,8 @@ class ProductViewSet(viewsets.ModelViewSet):
             ),
         ]
     )
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
 
     def get_queryset(self):
         # Foydalanuvchidan kelgan so'rovni olish

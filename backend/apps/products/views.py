@@ -38,28 +38,13 @@ class ProductViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
-    # @swagger_auto_schema(
-    #     manual_parameters=[
-    #         openapi.Parameter(
-    #             "pattern_category",
-    #             openapi.IN_QUERY,
-    #             description="Ota category bo'yicha barcha productlarni qaytaradi.",
-    #             type=openapi.TYPE_INTEGER,
-    #         ),
-    #     ]
-    # )
-    # def retrieve(self, request, *args, **kwargs):
-    #     return super().retrieve(request, *args, **kwargs)
-
     def get_queryset(self):
         # Foydalanuvchidan kelgan so'rovni olish
         params = self.request.query_params
-        # pattern_category = params.get("pattern_category", None)
-        pattern_category = self.kwargs("pk")
-        if pattern_category.childeren.exists():
+        pattern_category = self.kwargs.get("pk")
+        category = Category.objects.get(pk=pattern_category)
+        if category.childeren.exists():
             try:
-                category = Category.objects.get(pk=pattern_category)
-                print(category, "topolmadi")
                 categories = category.get_descendants(include_self=True)
                 return Product.objects.filter(category__in=categories)
             except Category.DoesNotExist:

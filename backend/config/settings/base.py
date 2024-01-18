@@ -91,6 +91,10 @@ CORS_ALLOWED_ORIGINS = [
     # Add other origins as needed
 ]
 
+# for imade send to front
+
+DOMAIN_NAME = "http://0.0.0.0:8000"
+
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = "*"

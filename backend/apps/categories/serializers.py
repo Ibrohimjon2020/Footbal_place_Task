@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from .models import Category
 from apps.products.models import Product
-
+from django.conf import settings
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,7 +19,7 @@ class ProductSerializer(serializers.ModelSerializer):
         ]  # Kerakli maydonlarni tanlang
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        domain_name = "http://0.0.0.0:8000"
+        domain_name = settings.DOMAIN_NAME
         # full_path = domain_name + instance.image.url
         # representation['image'] = full_path
         if instance.image:
@@ -45,7 +45,7 @@ class CategorySubSerializer(serializers.ModelSerializer):
         return ProductSerializer(products, many=True).data
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        domain_name = "http://0.0.0.0:8000"
+        domain_name = settings.DOMAIN_NAME
         full_path = domain_name + instance.image.url
         representation['image'] = full_path
         return representation
@@ -61,7 +61,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        domain_name = "http://0.0.0.0:8000"
+        domain_name = settings.DOMAIN_NAME
         full_path = domain_name + instance.image.url
         representation['image'] = full_path
         return representation

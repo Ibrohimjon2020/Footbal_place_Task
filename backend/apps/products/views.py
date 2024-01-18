@@ -44,25 +44,42 @@ class ProductViewSet(viewsets.ModelViewSet):
     )
     def list(self, request, *args, **kwargs):
         params = self.request.query_params
+
         if params.get("all") == "true":
+            # Barcha mahsulotlarni qaytarish (paginationni o'chirib)
             queryset = Product.objects.all()
             serializer = self.get_serializer(queryset, many=True)
             return views.Response(serializer.data)
-        # Aks holda, standart queryset (pagination bilan)
+
+        pattern_category = params.get("category")
+        if pattern_category:
+            try:
+                category = Category.objects.get(pk=pattern_category)
+                if category.childeren.exists():
+                    categories = Category.objects.filter(parent=category)
+                    queryset = Product.objects.filter(category__in=categories)
+                    # Bu yerda ham pagination qo'llanishi kerak
+                    page = self.paginate_queryset(queryset)
+                    if page is not None:
+                        serializer = self.get_serializer(page, many=True)
+                        return self.get_paginated_response(serializer.data)
+                    serializer = self.get_serializer(queryset, many=True)
+                    return views.Response(serializer.data)
+            except Category.DoesNotExist:
+                return views.Response([])  # Agar kategoriya topilmasa, bo'sh ro'yxat qaytarish
+
+        # Agar maxsus parametrlar bo'lmasa, standart list metodini ishlatish
         return super().list(request, *args, **kwargs)
 
     def get_queryset(self):
-        # Foydalanuvchidan kelgan so'rovni olish
         params = self.request.query_params
         pattern_category = params.get("category")
         category = Category.objects.get(pk=pattern_category)
         if category.childeren.exists():
-            try:
-                categories = category.get_descendants(include_self=True)
-                products = Product.objects.filter(category__in=categories)
-                return products
-            except Category.DoesNotExist:
-                return Product.objects.none()
+            categories = category.get_descendants(include_self=True)
+            products = Product.objects.filter(category__in=categories)
+            print(products)
+            return products
 
         return super().get_queryset()
 

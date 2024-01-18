@@ -4,5 +4,9 @@ from .models import Product, Banner
 
 # Register your models here.
 
-admin.site.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'description', 'category', 'prepare_time')
+
+
+admin.site.register(Product, ProductAdmin)
 admin.site.register(Banner)

@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework import views
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django_filters.rest_framework import DjangoFilterBackend
@@ -33,29 +34,37 @@ class ProductViewSet(viewsets.ModelViewSet):
                 description="Barcha kategoriyalarni qaytaradi. Qiymati 'true' bo'lsa, pagination qo'llanilmaydi.",
                 type=openapi.TYPE_BOOLEAN,
             ),
+            openapi.Parameter(
+                "category",
+                openapi.IN_QUERY,
+                description="category bo'yicha productslarni qaytarish",
+                type=openapi.TYPE_INTEGER,
+            ),
         ]
     )
     def list(self, request, *args, **kwargs):
+        params = self.request.query_params
+        if params.get("all") == "true":
+            queryset = Product.objects.all()
+            serializer = self.get_serializer(queryset, many=True)
+            return views.Response(serializer.data)
+        # Aks holda, standart queryset (pagination bilan)
         return super().list(request, *args, **kwargs)
 
     def get_queryset(self):
         # Foydalanuvchidan kelgan so'rovni olish
         params = self.request.query_params
-        pattern_category = self.kwargs.get("pk")
+        pattern_category = params.get("category")
         category = Category.objects.get(pk=pattern_category)
         if category.childeren.exists():
             try:
                 categories = category.get_descendants(include_self=True)
-                return Product.objects.filter(category__in=categories)
+                products = Product.objects.filter(category__in=categories)
+                return products
             except Category.DoesNotExist:
-                # Agar berilgan kategoriya mavjud bo'lmasa, bo'sh queryset qaytarish
                 return Product.objects.none()
-        # Agar 'all' so'rovi bo'lsa, barcha ob'ektlarni qaytarish
-        if params.get("all") == "true":
-            return Product.objects.all()
-        # Aks holda, standart queryset (pagination bilan)
-        else:
-            return super().get_queryset()
+
+        return super().get_queryset()
 
 
 class BannerViewSet(viewsets.ModelViewSet):

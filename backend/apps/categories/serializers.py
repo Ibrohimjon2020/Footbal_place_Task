@@ -17,6 +17,21 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "category",
         ]  # Kerakli maydonlarni tanlang
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        # Ishonchli qiling, modellarda rasm (image) va gif maydonlari mavjud ekanligi
+        if 'image' in representation and instance.image:
+            domain_name = settings.DOMAIN_NAME
+            full_path = domain_name + instance.image.url
+            representation['image'] = full_path
+
+        if 'gif' in representation and instance.gif:
+            domain_name = settings.DOMAIN_NAME
+            full_path = domain_name + instance.gif.url
+            representation['gif'] = full_path
+
+        return representation
  
 class CategorySubSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()

@@ -6,8 +6,8 @@ from django.db import models
 class Product(models.Model):
     image = models.ImageField(upload_to="product/image/", null=True)
     gif = models.FileField(upload_to="product/gif/", null=True)
-    name = models.CharField(max_length=25)
-    description = models.TextField(max_length=500)
+    name = models.CharField(max_length=100)
+    description = models.TextField()
     price = models.PositiveIntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

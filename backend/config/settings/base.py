@@ -91,6 +91,10 @@ CORS_ALLOWED_ORIGINS = [
     # Add other origins as needed
 ]
 
+# for imade send to front
+
+DOMAIN_NAME = "https://b8e1-195-158-3-178.ngrok-free.app"
+
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = "*"

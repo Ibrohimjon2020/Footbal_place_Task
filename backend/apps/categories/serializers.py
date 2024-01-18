@@ -17,20 +17,6 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "category",
         ]  # Kerakli maydonlarni tanlang
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        domain_name = settings.DOMAIN_NAME
-        # full_path = domain_name + instance.image.url
-        # representation['image'] = full_path
-        if instance.image:
-            full_image_path = domain_name + instance.image.url
-            representation['image'] = full_image_path
-
-        # To avoid 'None' value error, check if 'gif' is not None
-        if instance.gif:
-            full_gif_path = domain_name + instance.gif.url
-            representation['gif'] = full_gif_path
-        return representation
  
 class CategorySubSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()

@@ -9,7 +9,7 @@ class ProductSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
             representation = super().to_representation(instance)
             domain_name = settings.DOMAIN_NAME
-            full_path = domain_name + instance.gif.url
+            full_path = domain_name + instance.image.url
             representation['image'] = full_path
             return representation
         

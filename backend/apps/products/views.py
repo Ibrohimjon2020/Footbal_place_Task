@@ -66,22 +66,12 @@ class ProductViewSet(viewsets.ModelViewSet):
                     serializer = self.get_serializer(queryset, many=True)
                     return views.Response(serializer.data)
             except Category.DoesNotExist:
-                return views.Response([])  # Agar kategoriya topilmasa, bo'sh ro'yxat qaytarish
+                return views.Response(
+                    []
+                )  # Agar kategoriya topilmasa, bo'sh ro'yxat qaytarish
 
         # Agar maxsus parametrlar bo'lmasa, standart list metodini ishlatish
         return super().list(request, *args, **kwargs)
-
-    def get_queryset(self):
-        params = self.request.query_params
-        pattern_category = params.get("category")
-        category = Category.objects.get(pk=pattern_category)
-        if category.childeren.exists():
-            categories = category.get_descendants(include_self=True)
-            products = Product.objects.filter(category__in=categories)
-            print(products)
-            return products
-
-        return super().get_queryset()
 
 
 class BannerViewSet(viewsets.ModelViewSet):

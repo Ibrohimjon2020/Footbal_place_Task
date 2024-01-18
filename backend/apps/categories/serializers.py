@@ -22,7 +22,18 @@ class CategorySubSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
     class Meta:
         model = Category
-        fields = ["id", "name", "description", "title", "image", "head_name", "hashtag_name", "created", "updated", "products"]
+        fields = [
+            "id", 
+            "name", 
+            "description", 
+            "title", 
+            "image", 
+            "head_name", 
+            "hashtag_name", 
+            "created", 
+            "updated", 
+            "products"
+            ]
     
     def get_products(self, obj):
         products = Product.objects.filter(category=obj)[
@@ -36,7 +47,19 @@ class CategorySerializer(serializers.ModelSerializer):
     parent = CategorySubSerializer(required=False)
     class Meta:
         model = Category
-        fields = ["id", "name", "description", "title", "image", "head_name", "hashtag_name", "parent", "created", "updated", "products"]
+        fields = [
+            "id", 
+            "name", 
+            "description", 
+            "title", 
+            "image", 
+            "head_name", 
+            "hashtag_name", 
+            "parent", 
+            "created", 
+            "updated", 
+            "products"
+            ]
 
     def get_products(self, obj):
         products = Product.objects.filter(category=obj)[

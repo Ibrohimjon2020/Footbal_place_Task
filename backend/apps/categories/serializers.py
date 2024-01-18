@@ -17,7 +17,21 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "category",
         ]  # Kerakli maydonlarni tanlang
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        domain_name = "http://0.0.0.0:8000"
+        # full_path = domain_name + instance.image.url
+        # representation['image'] = full_path
+        if instance.image:
+            full_image_path = domain_name + instance.image.url
+            representation['image'] = full_image_path
 
+        # To avoid 'None' value error, check if 'gif' is not None
+        if instance.gif:
+            full_gif_path = domain_name + instance.gif.url
+            representation['gif'] = full_gif_path
+        return representation
+ 
 class CategorySubSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
     class Meta:
@@ -29,6 +43,12 @@ class CategorySubSerializer(serializers.ModelSerializer):
             :5
         ]  # Har bir kategoriya uchun 5 mahsulot
         return ProductSerializer(products, many=True).data
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        domain_name = "http://0.0.0.0:8000"
+        full_path = domain_name + instance.image.url
+        representation['image'] = full_path
+        return representation
 
 # CategorySerializer-ni yangilash
 class CategorySerializer(serializers.ModelSerializer):
@@ -39,6 +59,13 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ["id", "name", "description", "title", "image", "head_name", "hashtag_name", "parent", "created", "updated", "products","children"]
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        domain_name = "http://0.0.0.0:8000"
+        full_path = domain_name + instance.image.url
+        representation['image'] = full_path
+        return representation
+
     def get_products(self, obj):
         products = Product.objects.filter(category=obj)[
             :5
@@ -47,8 +74,8 @@ class CategorySerializer(serializers.ModelSerializer):
     def get_children(self,obj):
         children = Category.objects.filter(parent=obj)
         return CategorySerializer(children, many=True).data
+
 class CategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ["id", "name", "description", "title", "image", "head_name", "hashtag_name", "parent", "created", "updated"]
-

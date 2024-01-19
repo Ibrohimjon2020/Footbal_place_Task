@@ -143,10 +143,15 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def get_products_count(self, obj):
         products_count = obj.cat_products.all().count()
+        print(products_count,"soni")
         return products_count
 
     def get_products(self, obj):
-        products = obj.cat_products.all()[:5]  # Har bir kategoriya uchun 5 mahsulot
+        products  = obj.cat_products.all()[
+            :5
+        ] 
+        print(products,"productlar kelaypti")
+        # Har bir kategoriya uchun 5 mahsulot
         return ProductSerializer(products, many=True).data
 
     def get_children(self, obj):

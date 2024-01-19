@@ -44,9 +44,9 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 LOCAL_APPS = [
-    'apps.categories',
-    'apps.products',
-    'apps.accounts',
+    "apps.categories",
+    "apps.products",
+    "apps.accounts",
 ]
 
 INSTALLED_APPS = [
@@ -79,7 +79,7 @@ MIDDLEWARE = [
 CSRF_TRUSTED_ORIGINS = [
     "http://0.0.0.0:8000/",
     "http://0.0.0.0:8000",
-    "https://manecafe.uz/"
+    "https://manecafe.uz/",
 ]  # ngrok temporary url
 CORS_ALLOW_ALL_ORIGINS = True
 # CORS ORIGIN

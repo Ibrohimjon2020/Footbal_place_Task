@@ -87,7 +87,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     # "http://localhost:8000/",
     "http://127.0.0.1:8000",
-    "https://manecafe.uz/"
+    "https://manecafe.uz"
     # "http://127.0.0.1:8000/",
     # Add other origins as needed
 ]

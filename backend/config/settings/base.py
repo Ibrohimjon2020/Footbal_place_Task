@@ -84,22 +84,22 @@ CSRF_TRUSTED_ORIGINS = [
 ]  # ngrok temporary url
 CORS_ALLOW_ALL_ORIGINS = True
 # CORS ORIGIN
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    # "http://localhost:8000/",
-    "http://127.0.0.1:8000",
-    "https://manecafe.uz"
-    # "http://127.0.0.1:8000/",
-    # Add other origins as needed
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8000",
+#     # "http://localhost:8000/",
+#     "http://127.0.0.1:8000",
+#     "https://manecafe.uz"
+#     # "http://127.0.0.1:8000/",
+#     # Add other origins as needed
+# ]
 
 # for imade send to front
 
-DOMAIN_NAME = "https://manecafe.uz/"
 
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = "*"
+DOMAIN_NAME = "https://manecafe.uz/"
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 

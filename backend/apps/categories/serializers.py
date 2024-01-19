@@ -60,9 +60,8 @@ class CategorySubSerializer(serializers.ModelSerializer):
         ]
 
     def get_products(self, obj):
-        products = Product.objects.filter(category=obj)[
-            :5
-        ]  # Har bir kategoriya uchun 5 mahsulot
+        products = obj.cat_products.all()[:5]
+        # Har bir kategoriya uchun 5 mahsulot
         return ProductSerializer(products, many=True).data
 
     def to_representation(self, instance):
@@ -79,10 +78,37 @@ class CategorySubSerializer(serializers.ModelSerializer):
 
 
 # CategorySerializer-ni yangilash
+
+
+class CategoryForChildrenSerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Category
+        fields = [
+            "id",
+            "name",
+            "description",
+            "title",
+            "image",
+            "head_name",
+            "hashtag_name",
+            "parent",
+            "created",
+            "updated",
+            "children",
+        ]
+
+    def get_children(self, obj):
+        children = Category.objects.filter(parent=obj)
+        return CategorySerializer(children, many=True).data
+
+
 class CategorySerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
     products = serializers.SerializerMethodField()
     parent = CategorySubSerializer(required=False)
+    products_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
@@ -99,6 +125,7 @@ class CategorySerializer(serializers.ModelSerializer):
             "updated",
             "products",
             "children",
+            "products_count",
         ]
 
     def to_representation(self, instance):
@@ -114,15 +141,20 @@ class CategorySerializer(serializers.ModelSerializer):
 
         return representation
 
+    def get_products_count(self, obj):
+        products_count = obj.cat_products.all().count()
+        return products_count
+
     def get_products(self, obj):
-        products = Product.objects.filter(category=obj)[
+        products  = obj.cat_products.all()[
             :5
-        ]  # Har bir kategoriya uchun 5 mahsulot
+        ] 
+        # Har bir kategoriya uchun 5 mahsulot
         return ProductSerializer(products, many=True).data
 
     def get_children(self, obj):
         children = Category.objects.filter(parent=obj)
-        return CategorySerializer(children, many=True).data
+        return CategoryForChildrenSerializer(children, many=True).data
 
 
 class CategoryCreateSerializer(serializers.ModelSerializer):

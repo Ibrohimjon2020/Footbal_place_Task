@@ -60,7 +60,7 @@ class CategorySubSerializer(serializers.ModelSerializer):
         ]
 
     def get_products(self, obj):
-        products = obj.products.all()[:5]
+        products = obj.cat_products.all()[:5]
         # Har bir kategoriya uchun 5 mahsulot
         return ProductSerializer(products, many=True).data
 

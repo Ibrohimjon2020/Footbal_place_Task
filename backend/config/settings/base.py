@@ -79,6 +79,7 @@ MIDDLEWARE = [
 CSRF_TRUSTED_ORIGINS = [
     "http://0.0.0.0:8000/",
     "http://0.0.0.0:8000",
+    "https://manecafe.uz",
     "https://manecafe.uz/",
 ]  # ngrok temporary url
 CORS_ALLOW_ALL_ORIGINS = True

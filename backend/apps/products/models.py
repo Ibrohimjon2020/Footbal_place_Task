@@ -12,7 +12,7 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     prepare_time = models.PositiveIntegerField(blank=True, default=0)
-    category = models.ForeignKey(to="categories.Category", on_delete=models.CASCADE,related_name="products")
+    category = models.ForeignKey(to="categories.Category", on_delete=models.CASCADE,related_name="cat_products")
 
     def __str__(self):
         return self.name

@@ -13,6 +13,7 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True)
     prepare_time = models.PositiveIntegerField(blank=True, default=0)
     category = models.ForeignKey(to="categories.Category", on_delete=models.CASCADE,related_name="cat_products")
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -22,6 +23,7 @@ class Banner(models.Model):
     summary = models.CharField(max_length=255)
     image = models.ImageField(upload_to='images/banner')
     body = models.TextField()
+    is_active = models.BooleanField(default=True)
     
     
     def __str__(self):

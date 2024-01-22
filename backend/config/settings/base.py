@@ -44,9 +44,9 @@ ALLOWED_HOSTS = ["*"]
 
 # Application definition
 LOCAL_APPS = [
-    'apps.categories',
-    'apps.products',
-    'apps.accounts',
+    "apps.categories",
+    "apps.products",
+    "apps.accounts",
 ]
 
 INSTALLED_APPS = [
@@ -68,32 +68,39 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",  # YENİ
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
+    
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://0.0.0.0:8000/",
     "http://0.0.0.0:8000",
-    "https://eb84-195-158-3-178.ngrok-free.app/"
+    "https://manecafe.uz",
+    "https://manecafe.uz/",
 ]  # ngrok temporary url
 CORS_ALLOW_ALL_ORIGINS = True
 # CORS ORIGIN
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    # "http://localhost:8000/",
-    "http://127.0.0.1:8000",
-    # "http://127.0.0.1:8000/",
-    # Add other origins as needed
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8000",
+#     # "http://localhost:8000/",
+#     "http://127.0.0.1:8000",
+#     "https://manecafe.uz"
+#     # "http://127.0.0.1:8000/",
+#     # Add other origins as needed
+# ]
 
-CORS_ALLOW_CREDENTIALS = True
+# for imade send to front
 
-CORS_ALLOW_HEADERS = "*"
+
+# CORS_ALLOW_CREDENTIALS = True
+
+# CORS_ALLOW_HEADERS = "*"
+DOMAIN_NAME = "https://manecafe.uz/"
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 

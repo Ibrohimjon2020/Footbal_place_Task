@@ -1,6 +1,6 @@
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-from rest_framework import viewsets, views
+from rest_framework import viewsets, views, status
 from .models import Category
 from .serializers import CategorySerializer, CategoryCreateSerializer
 
@@ -32,13 +32,22 @@ class CategoryViewSet(viewsets.ModelViewSet):
         ]
     )
     def list(self, request, *args, **kwargs):
-        params = self.request.query_params
-        if params.get("all") == "true":
-            # Barcha mahsulotlarni qaytarish (paginationni o'chirib)
-            queryset = Category.objects.all()
-            serializer = self.get_serializer(queryset, many=True)
-            return views.Response(serializer.data)
-        return super().list(request, *args, **kwargs)
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return views.Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        all_products = self.request.query_params.get("all", None)
+
+        if all_products:
+            return queryset
+        return super().get_queryset()
 
     def get_serializer_class(self):
         if self.action in ["list", "retrieve"]:

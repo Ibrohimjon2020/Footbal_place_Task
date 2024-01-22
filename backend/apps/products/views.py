@@ -1,17 +1,18 @@
-from rest_framework import viewsets
-from rest_framework import views
+from rest_framework import viewsets, response, status
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Product, Banner
 from apps.categories.models import Category
 from .serializers import ProductSerializer, BannerSerializer
+from .filters import ProductFilter
 
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
+    # filterset_class = ProductFilter
     filterset_fields = ["category"]
 
     @swagger_auto_schema(
@@ -43,35 +44,71 @@ class ProductViewSet(viewsets.ModelViewSet):
         ]
     )
     def list(self, request, *args, **kwargs):
-        params = self.request.query_params
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
-        if params.get("all") == "true":
-            # Barcha mahsulotlarni qaytarish (paginationni o'chirib)
-            queryset = Product.objects.all()
-            serializer = self.get_serializer(queryset, many=True)
-            return views.Response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
 
-        pattern_category = params.get("category")
-        if pattern_category:
-            try:
-                category = Category.objects.get(pk=pattern_category)
-                if category.childeren.exists():
-                    categories = Category.objects.filter(parent=category)
-                    queryset = Product.objects.filter(category__in=categories)
-                    # Bu yerda ham pagination qo'llanishi kerak
-                    page = self.paginate_queryset(queryset)
-                    if page is not None:
-                        serializer = self.get_serializer(page, many=True)
-                        return self.get_paginated_response(serializer.data)
-                    serializer = self.get_serializer(queryset, many=True)
-                    return views.Response(serializer.data)
-            except Category.DoesNotExist:
-                return views.Response(
-                    []
-                )  # Agar kategoriya topilmasa, bo'sh ro'yxat qaytarish
+    def get_queryset(self):
+        """
+        Custom queryset to handle filtering by category and its children,
+        and a parameter to return all products.
+        """
+        queryset = super().get_queryset()
+        category_id = self.request.query_params.get("category", None)
+        all_products = self.request.query_params.get("all", None)
 
-        # Agar maxsus parametrlar bo'lmasa, standart list metodini ishlatish
-        return super().list(request, *args, **kwargs)
+        if all_products:
+            return queryset  # Return all products if 'all=true' is provided
+
+        if category_id:
+            # Get the category and its children's ids
+            category = Category.objects.get(pk=category_id)
+            child_categories = category.childeren.all()
+            child_ids = [category.id for category in child_categories]
+            child_ids.append(category.id)  # Include the parent category itself
+            print(queryset.filter(category_id__in=child_ids))
+            # Filter products belonging to the category and its children
+            queryset = queryset.filter(category_id__in=child_ids)
+
+        return queryset
+
+    # def list(self, request, *args, **kwargs):
+    #     params = self.request.query_params
+
+    #     if params.get("all") == "true":
+    #         # Barcha mahsulotlarni qaytarish (paginationni o'chirib)
+    #         queryset = Product.objects.all()
+    #         page = self.paginate_queryset(queryset)
+    #         if page is not None:
+    #             serializer = self.get_serializer(page, many=True)
+    #             return self.get_paginated_response(serializer.data)
+    #         serializer = self.get_serializer(queryset, many=True)
+    #     pattern_category = params.get("category")
+    #     if pattern_category:
+    #         try:
+    #             category = Category.objects.get(pk=pattern_category)
+    #             if category.childeren.exists():
+    #                 categories = Category.objects.filter(parent=category)
+    #                 queryset = Product.objects.filter(category__in=categories)
+    #                 # Bu yerda ham pagination qo'llanishi kerak
+    #                 page = self.paginate_queryset(queryset)
+    #                 if page is not None:
+    #                     serializer = self.get_serializer(page, many=True)
+    #                     return self.get_paginated_response(serializer.data)
+    #                 serializer = self.get_serializer(queryset, many=True)
+    #                 return views.Response(serializer.data)
+    #         except Category.DoesNotExist:
+    #             return views.Response(
+    #                 []
+    #             )  # Agar kategoriya topilmasa, bo'sh ro'yxat qaytarish
+
+    #     # Agar maxsus parametrlar bo'lmasa, standart list metodini ishlatish
+    #     return super().list(request, *args, **kwargs)
 
 
 class BannerViewSet(viewsets.ModelViewSet):

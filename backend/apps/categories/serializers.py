@@ -202,7 +202,7 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         children_data = validated_data.pop("children", [])
         # Check if the list is empty
         if children_data and children_data != ['']:
-            new_data = children_data[0].split(',')
+            new_data = children_data[0].split(', ')
             instance = super().create(validated_data)
             self.create_children(instance, new_data)
         else :

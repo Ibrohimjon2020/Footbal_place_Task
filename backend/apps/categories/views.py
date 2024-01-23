@@ -3,13 +3,13 @@ from drf_yasg import openapi
 from rest_framework import viewsets, views, status
 from .models import Category
 from .serializers import CategorySerializer, CategoryCreateSerializer
-from apps.accounts.permissions import IsAdminOrReadOnly, IsOwnerOrReadonly
+
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.prefetch_related("cat_products").all()
     # serializer_class = CategorySerializer
-    permission_classes = [IsAdminOrReadOnly, IsOwnerOrReadonly]
+
 
     @swagger_auto_schema(
         manual_parameters=[

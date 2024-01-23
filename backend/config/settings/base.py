@@ -99,9 +99,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 # for imade send to front
 
 
-# CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
 
-# CORS_ALLOW_HEADERS = "*"
+CORS_ALLOW_HEADERS = "*"
 DOMAIN_NAME = "https://api.manecafe.uz/"
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

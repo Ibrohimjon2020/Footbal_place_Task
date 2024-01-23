@@ -79,6 +79,7 @@ MIDDLEWARE = [
 
 CSRF_TRUSTED_ORIGINS = [
     "http://0.0.0.0:8000/",
+    "http://0.0.0.0",
     "http://0.0.0.0:8000",
     "https://manecafe.uz",
     "https://manecafe.uz/",
@@ -150,6 +151,8 @@ DATABASES = {
         "PORT": int(os.environ.get("DB_PORT", "5433")),
     }
 }
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

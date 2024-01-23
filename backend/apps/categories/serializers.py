@@ -5,6 +5,7 @@ from apps.products.models import Product
 from django.conf import settings
 
 
+
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
@@ -155,6 +156,8 @@ class CategorySerializer(serializers.ModelSerializer):
     def get_children(self, obj):
         children = Category.objects.filter(parent=obj)
         return CategoryForChildrenSerializer(children, many=True).data
+    
+
 
 
 # class CategoryCreateSerializer(serializers.ModelSerializer):

@@ -5,9 +5,11 @@ from .models import Category
 from .serializers import CategorySerializer, CategoryCreateSerializer
 
 
+
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.prefetch_related("cat_products").all()
     # serializer_class = CategorySerializer
+
 
     @swagger_auto_schema(
         manual_parameters=[

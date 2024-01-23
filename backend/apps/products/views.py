@@ -5,6 +5,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Product, Banner
 from apps.categories.models import Category
 from .serializers import ProductSerializer, BannerSerializer
+
 from .filters import ProductFilter
 
 
@@ -14,6 +15,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     # filterset_class = ProductFilter
     filterset_fields = ["category"]
+    
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -114,3 +116,5 @@ class ProductViewSet(viewsets.ModelViewSet):
 class BannerViewSet(viewsets.ModelViewSet):
     queryset = Banner.objects.all()
     serializer_class = BannerSerializer
+   
+

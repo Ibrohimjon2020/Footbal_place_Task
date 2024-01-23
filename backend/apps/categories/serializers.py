@@ -1,9 +1,9 @@
 # serializers.py
-from rest_framework import serializers
-from .models import Category
 from apps.products.models import Product
 from django.conf import settings
+from rest_framework import serializers
 
+from .models import Category
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -147,17 +147,13 @@ class CategorySerializer(serializers.ModelSerializer):
         return products_count
 
     def get_products(self, obj):
-        products  = obj.cat_products.all()[
-            :5
-        ] 
+        products = obj.cat_products.all()[:5]
         # Har bir kategoriya uchun 5 mahsulot
         return ProductSerializer(products, many=True).data
 
     def get_children(self, obj):
         children = Category.objects.filter(parent=obj)
         return CategoryForChildrenSerializer(children, many=True).data
-    
-
 
 
 # class CategoryCreateSerializer(serializers.ModelSerializer):
@@ -176,8 +172,11 @@ class CategorySerializer(serializers.ModelSerializer):
 #             "updated",
 #         ]
 
+
 class CategoryCreateSerializer(serializers.ModelSerializer):
-    parent = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), required=False)
+    parent = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), required=False
+    )
     children = serializers.ListField(write_only=True, required=False)
 
     class Meta:
@@ -204,10 +203,10 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         children_data = validated_data.pop("children", [])
         # Check if the list is empty
-        if children_data and children_data != ['']:
-            new_data = children_data[0].split(', ')
+        if children_data and children_data != [""]:
+            new_data = children_data[0].split(", ")
             instance = super().create(validated_data)
             self.create_children(instance, new_data)
-        else :
+        else:
             instance = super().create(validated_data)
         return instance

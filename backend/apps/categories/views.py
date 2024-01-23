@@ -1,15 +1,14 @@
-from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-from rest_framework import viewsets, views, status
-from .models import Category
-from .serializers import CategorySerializer, CategoryCreateSerializer
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status, views, viewsets
 
+from .models import Category
+from .serializers import CategoryCreateSerializer, CategorySerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.prefetch_related("cat_products").all()
     # serializer_class = CategorySerializer
-
 
     @swagger_auto_schema(
         manual_parameters=[

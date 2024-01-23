@@ -1,14 +1,12 @@
 # api/auth.py
-from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework import permissions
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
-from .auth_serializers import (
-    AuthTokenSerializer,
-    RegistrationSerializer,
-    AccountVerificationSerializer,
-    SetPasswordSerializer,
-)
+
+from .auth_serializers import (AccountVerificationSerializer,
+                               AuthTokenSerializer, RegistrationSerializer,
+                               SetPasswordSerializer)
 
 
 class CustomAuthToken(ObtainAuthToken):

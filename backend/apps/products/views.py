@@ -1,12 +1,12 @@
-from rest_framework import viewsets, response, status
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from django_filters.rest_framework import DjangoFilterBackend
-from .models import Product, Banner
 from apps.categories.models import Category
-from .serializers import ProductSerializer, BannerSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import response, status, viewsets
 
 from .filters import ProductFilter
+from .models import Banner, Product
+from .serializers import BannerSerializer, ProductSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -15,7 +15,6 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     # filterset_class = ProductFilter
     filterset_fields = ["category"]
-    
 
     @swagger_auto_schema(
         manual_parameters=[
@@ -116,5 +115,3 @@ class ProductViewSet(viewsets.ModelViewSet):
 class BannerViewSet(viewsets.ModelViewSet):
     queryset = Banner.objects.all()
     serializer_class = BannerSerializer
-   
-

@@ -152,7 +152,11 @@ DATABASES = {
     }
 }
 
-DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
+FILE_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024 # (50MEGABYTES)
+DATA_UPLOAD_MAX_MEMORY_SIZE = FILE_UPLOAD_MAX_MEMORY_SIZE
+
+# DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
+# maximal vide hajmini limiti
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

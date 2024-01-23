@@ -1,7 +1,6 @@
-from config.settings.base import *
 import sentry_sdk
+from config.settings.base import *
 from decouple import config
-
 
 DEBUG = config("DEBUG")
 

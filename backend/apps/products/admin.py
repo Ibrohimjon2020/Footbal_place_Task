@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Product, Banner
 
+from .models import Banner, Product
 
 # Register your models here.
 

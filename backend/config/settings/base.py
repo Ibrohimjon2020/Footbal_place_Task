@@ -74,7 +74,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -82,6 +81,8 @@ CSRF_TRUSTED_ORIGINS = [
     "http://0.0.0.0",
     "http://0.0.0.0:8000",
     "https://manecafe.uz",
+    "https://api.manecafe.uz/",
+    "https://api.manecafe.uz",
     "https://manecafe.uz/",
 ]  # ngrok temporary url
 CORS_ALLOW_ALL_ORIGINS = True

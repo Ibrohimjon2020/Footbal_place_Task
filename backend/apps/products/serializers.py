@@ -1,7 +1,7 @@
-from rest_framework import serializers
-from .models import Product, Banner
 from django.conf import settings
+from rest_framework import serializers
 
+from .models import Banner, Product
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -20,13 +20,9 @@ class ProductSerializer(serializers.ModelSerializer):
             representation["image"] = None
 
         return representation
-    
-
 
 
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
         fields = "__all__"
-    
-

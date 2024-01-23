@@ -28,6 +28,7 @@ class Banner(models.Model):
     title = models.CharField(max_length=250)
     summary = models.CharField(max_length=255)
     image = models.ImageField(upload_to='images/banner')
+    video = models.FileField(upload_to='banners/video', null=True)
     body = models.TextField()
     is_active = models.BooleanField(default=True)
     

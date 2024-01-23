@@ -79,6 +79,7 @@ MIDDLEWARE = [
 
 CSRF_TRUSTED_ORIGINS = [
     "http://0.0.0.0:8000/",
+    "http://0.0.0.0",
     "http://0.0.0.0:8000",
     "https://manecafe.uz",
     "https://manecafe.uz/",
@@ -103,6 +104,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 DOMAIN_NAME = "https://manecafe.uz/"
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 
 ROOT_URLCONF = "config.urls"
 
@@ -149,6 +151,12 @@ DATABASES = {
         "PORT": int(os.environ.get("DB_PORT", "5433")),
     }
 }
+
+FILE_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024 # (50MEGABYTES)
+DATA_UPLOAD_MAX_MEMORY_SIZE = FILE_UPLOAD_MAX_MEMORY_SIZE
+
+# DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
+# maximal vide hajmini limiti
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

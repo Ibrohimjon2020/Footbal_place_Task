@@ -1,6 +1,7 @@
-from rest_framework import serializers
-from .models import Product, Banner
 from django.conf import settings
+from rest_framework import serializers
+
+from .models import Banner, Product
 
 
 class ProductSerializer(serializers.ModelSerializer):

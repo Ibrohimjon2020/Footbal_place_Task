@@ -6,7 +6,7 @@ from .views import BannerViewSet, ProductViewSet, ProductForUrlViewSet
 router = DefaultRouter()
 router.register(r"products", ProductViewSet)
 router.register(r"banners", BannerViewSet)
-router.register(r"gir-url", ProductForUrlViewSet)
+router.register(r"gif-url", ProductForUrlViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),

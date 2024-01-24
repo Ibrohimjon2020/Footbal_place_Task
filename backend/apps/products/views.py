@@ -6,7 +6,7 @@ from rest_framework import response, status, viewsets
 
 from .filters import ProductFilter
 from .models import Banner, Product
-from .serializers import BannerSerializer, ProductSerializer
+from .serializers import BannerSerializer, ProductSerializer, ProductSerializerForUrl
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -110,6 +110,11 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     #     # Agar maxsus parametrlar bo'lmasa, standart list metodini ishlatish
     #     return super().list(request, *args, **kwargs)
+
+
+class ProductForUrlViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializerForUrl
 
 
 class BannerViewSet(viewsets.ModelViewSet):

@@ -115,6 +115,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 class ProductForUrlViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializerForUrl
+    pagination_class = None
 
 
 class BannerViewSet(viewsets.ModelViewSet):

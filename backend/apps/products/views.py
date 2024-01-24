@@ -3,6 +3,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import response, status, viewsets
+from rest_framework import generics
+
+
 
 from .filters import ProductFilter
 from .models import Banner, Product
@@ -112,7 +115,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     #     return super().list(request, *args, **kwargs)
 
 
-class ProductForUrlViewSet(viewsets.ModelViewSet):
+class ProductForUrlListView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializerForUrl
     pagination_class = None

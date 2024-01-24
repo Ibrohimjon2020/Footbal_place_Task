@@ -11,7 +11,7 @@ class Product(models.Model):
                            validators=[
                                FileExtensionValidator(allowed_extensions=['gif', 'mp4', 'mov']),
                                       ]
-                               )
+                           )
     name = models.CharField(max_length=100)
     description = models.TextField()
     price = models.PositiveIntegerField(default=0)

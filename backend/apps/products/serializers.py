@@ -18,6 +18,13 @@ class ProductSerializer(serializers.ModelSerializer):
             representation["image"] = full_path
         else:
             representation["image"] = None
+        
+        if instance.gif and hasattr(instance.gif, "url"):
+            domain_name = settings.DOMAIN_NAME
+            full_path = domain_name + instance.gif.url
+            representation["gif"] = full_path
+        else:
+            representation["gif"] = None
 
         return representation
 

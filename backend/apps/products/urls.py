@@ -10,6 +10,6 @@ router.register(r"banners", BannerViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
-    path('gif-url/', ProductForUrlListView.as_view(), name='product-list'),
+    path('gif-url/', ProductForUrlListView.as_view()),
 
 ]

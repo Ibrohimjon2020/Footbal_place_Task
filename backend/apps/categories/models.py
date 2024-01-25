@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, blank=True, null=True)
     parent = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,
@@ -14,7 +14,7 @@ class Category(models.Model):
     )
     description = models.TextField(blank=True)
     title = models.CharField(max_length=225, null=True, blank=True)
-    image = models.ImageField(upload_to="category_images", blank=True)
+    image = models.ImageField(upload_to="category_images", blank=True, null=True)
     head_name = models.CharField(max_length=100, null=True, blank=True)
     hashtag_name = models.CharField(max_length=100, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -33,4 +33,4 @@ class Category(models.Model):
         return descendants
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"

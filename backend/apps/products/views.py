@@ -13,7 +13,8 @@ from .serializers import BannerSerializer, ProductSerializer, ProductSerializerF
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
+    # queryset = Product.objects.all()
+    queryset = Product.objects.filter(is_active=True)
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
     # filterset_class = ProductFilter
@@ -122,5 +123,6 @@ class ProductForUrlListView(generics.ListAPIView):
 
 
 class BannerViewSet(viewsets.ModelViewSet):
-    queryset = Banner.objects.all()
+    # queryset = Banner.objects.all()
+    queryset = Banner.objects.filter(is_active=True)
     serializer_class = BannerSerializer

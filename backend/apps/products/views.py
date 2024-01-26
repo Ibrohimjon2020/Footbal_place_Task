@@ -14,7 +14,7 @@ from .serializers import BannerSerializer, ProductSerializer, ProductSerializerF
 
 class ProductViewSet(viewsets.ModelViewSet):
     # queryset = Product.objects.all()
-    queryset = Product.objects.filter(is_active=True)
+    queryset = Product.objects.filter(is_active=True).order_by('-id')
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
     # filterset_class = ProductFilter

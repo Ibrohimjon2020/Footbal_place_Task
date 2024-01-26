@@ -116,11 +116,21 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "name_uz",
+            "name_ru",
             "description",
+            "description_uz",
+            "description_ru",
             "title",
+            "title_uz",
+            "title_ru",
             "image",
             "head_name",
+            "head_name_uz",
+            "head_name_ru",
             "hashtag_name",
+            "hashtag_name_uz",
+            "hashtag_name_ru",
             "parent",
             "created",
             "updated",
@@ -155,24 +165,6 @@ class CategorySerializer(serializers.ModelSerializer):
         children = Category.objects.filter(parent=obj)
         return CategoryForChildrenSerializer(children, many=True).data
 
-
-# class CategoryCreateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Category
-#         fields = [
-#             "id",
-#             "name",
-#             "description",
-#             "title",
-#             "image",
-#             "head_name",
-#             "hashtag_name",
-#             "parent",
-#             "created",
-#             "updated",
-#         ]
-
-
 class CategoryCreateSerializer(serializers.ModelSerializer):
     parent = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(), required=False
@@ -200,12 +192,8 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         category = Category.objects.create(**validated_data)
 
         for child_data in children_data:
-            child_id = child_data.pop("id")
-            child, created = Category.objects.get_or_create(id=child_id)
-            for attr, value in child_data.items():
-                setattr(child, attr, value)
-            child.parent = category
-            child.save()
+            # Yangi bolalar kategoriyasini yaratish
+            child = Category.objects.create(**child_data, parent=category)
 
         return category
 

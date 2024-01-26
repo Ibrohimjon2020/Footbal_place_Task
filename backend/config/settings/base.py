@@ -50,6 +50,7 @@ LOCAL_APPS = [
 ]
 
 INSTALLED_APPS = [
+    "modeltranslation",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -58,7 +59,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
-    "modeltranslation",
     "drf_yasg",
     "corsheaders",
     "django_filters",
@@ -197,7 +197,7 @@ REST_FRAMEWORK = {
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "uz"
 
 USE_L10N = True
 
@@ -206,11 +206,15 @@ USE_I18N = True
 USE_TZ = True
 TIME_ZONE = "Asia/Tashkent"
 
+# LANGUAGES = (("en", "English"), ("ru", "Russian"), ("uz", "Uzbek"))
+gettext = lambda s: s
+LANGUAGES = (
+    ('uz', gettext('Uzbek')),
+    ('ru', gettext('Russian')),
+)
 
-LANGUAGES = (("en", "English"), ("ru", "Russian"), ("uz", "Uzbek"))
-
-MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
-MODELTRANSLATION_LANGUAGES = ("uz", "en", "ru")
+MODELTRANSLATION_DEFAULT_LANGUAGE = "uz"
+MODELTRANSLATION_LANGUAGES = ("uz", "ru")
 
 LOCALE_PATHS = [
     BASE_DIR / "locale/",

@@ -197,30 +197,29 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
             "children",
         ]
 
-    def create_childeren(self, parent_instance, children_data):
-        for child_name in children_data:
-            try:
-                category_instance = Category.objects.get(name=child_name)
-            except Category.DoesNotExist:
-                category_instance = Category.objects.create(name=child_name, parent=parent_instance)
+    def create(self, validated_data):
+        children_data = validated_data.pop("children", [])
+        category = Category.objects.create(**validated_data)
+
+        for child_data in children_data:
+            # Yangi bolalar kategoriyasini yaratish
+            child = Category.objects.create(**child_data, parent=category)
+
+        return category
 
     def update(self, instance, validated_data):
         children_data = validated_data.pop("children", [])
-        if children_data and children_data != [""]:
-            new_data = children_data[0].split(", ")
-            instance = super().update(instance, validated_data)
-            self.create_childeren(instance, new_data)
-        else:
-            instance = super().update(instance, validated_data)
-        return instance
-    
-    def create(self, validated_data):
-        children_data = validated_data.pop("children", [])
-        if children_data and children_data != [""]:
-            new_data = children_data[0].split(", ")
-            instance = super().create(validated_data)
-            self.create_childeren(instance, new_data)
-        else:
-            instance = super().create(validated_data)
-        return instance
 
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        for child_data in children_data:
+            child_id = child_data.pop("id")
+            child, created = Category.objects.get_or_create(id=child_id)
+            for attr, value in child_data.items():
+                setattr(child, attr, value)
+            child.parent = instance
+            child.save()
+
+        return instance

@@ -116,11 +116,21 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "name_uz",
+            "name_ru",
             "description",
+            "description_uz",
+            "description_ru",
             "title",
+            "title_uz",
+            "title_ru",
             "image",
             "head_name",
+            "head_name_uz",
+            "head_name_ru",
             "hashtag_name",
+            "hashtag_name_uz",
+            "hashtag_name_ru",
             "parent",
             "created",
             "updated",
@@ -155,24 +165,6 @@ class CategorySerializer(serializers.ModelSerializer):
         children = Category.objects.filter(parent=obj)
         return CategoryForChildrenSerializer(children, many=True).data
 
-
-# class CategoryCreateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Category
-#         fields = [
-#             "id",
-#             "name",
-#             "description",
-#             "title",
-#             "image",
-#             "head_name",
-#             "hashtag_name",
-#             "parent",
-#             "created",
-#             "updated",
-#         ]
-
-
 class CategoryCreateSerializer(serializers.ModelSerializer):
     parent = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(), required=False
@@ -195,18 +187,30 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
             "children",
         ]
 
-    def create_children(self, parent_instance, children_data):
-        # Create child categories and link them to the parent instance
+    def create_childeren(self, parent_instance, children_data):
         for child_name in children_data:
-            Category.objects.create(name=child_name, parent=parent_instance)
+            try:
+                category_instance = Category.objects.get(name=child_name)
+            except Category.DoesNotExist:
+                category_instance = Category.objects.create(name=child_name, parent=parent_instance)
 
+    def update(self, instance, validated_data):
+        children_data = validated_data.pop("children", [])
+        if children_data and children_data != [""]:
+            new_data = children_data[0].split(", ")
+            instance = super().update(instance, validated_data)
+            self.create_childeren(instance, new_data)
+        else:
+            instance = super().update(instance, validated_data)
+        return instance
+    
     def create(self, validated_data):
         children_data = validated_data.pop("children", [])
-        # Check if the list is empty
         if children_data and children_data != [""]:
             new_data = children_data[0].split(", ")
             instance = super().create(validated_data)
-            self.create_children(instance, new_data)
+            self.create_childeren(instance, new_data)
         else:
             instance = super().create(validated_data)
         return instance
+

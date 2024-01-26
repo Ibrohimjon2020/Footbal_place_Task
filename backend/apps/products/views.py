@@ -124,5 +124,5 @@ class ProductForUrlListView(generics.ListAPIView):
 
 class BannerViewSet(viewsets.ModelViewSet):
     # queryset = Banner.objects.all()
-    queryset = Banner.objects.filter(is_active=True)
+    queryset = Banner.objects.filter(is_active=True).order_by('-id')
     serializer_class = BannerSerializer

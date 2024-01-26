@@ -195,18 +195,33 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
             "children",
         ]
 
-    def create_children(self, parent_instance, children_data):
-        # Create child categories and link them to the parent instance
-        for child_name in children_data:
-            Category.objects.create(name=child_name, parent=parent_instance)
-
     def create(self, validated_data):
         children_data = validated_data.pop("children", [])
-        # Check if the list is empty
-        if children_data and children_data != [""]:
-            new_data = children_data[0].split(", ")
-            instance = super().create(validated_data)
-            self.create_children(instance, new_data)
-        else:
-            instance = super().create(validated_data)
+        category = Category.objects.create(**validated_data)
+
+        for child_data in children_data:
+            child_id = child_data.pop("id")
+            child, created = Category.objects.get_or_create(id=child_id)
+            for attr, value in child_data.items():
+                setattr(child, attr, value)
+            child.parent = category
+            child.save()
+
+        return category
+
+    def update(self, instance, validated_data):
+        children_data = validated_data.pop("children", [])
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        for child_data in children_data:
+            child_id = child_data.pop("id")
+            child, created = Category.objects.get_or_create(id=child_id)
+            for attr, value in child_data.items():
+                setattr(child, attr, value)
+            child.parent = instance
+            child.save()
+
         return instance

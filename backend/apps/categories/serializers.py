@@ -165,6 +165,7 @@ class CategorySerializer(serializers.ModelSerializer):
         children = Category.objects.filter(parent=obj)
         return CategoryForChildrenSerializer(children, many=True).data
 
+
 class CategoryCreateSerializer(serializers.ModelSerializer):
     parent = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(), required=False
@@ -205,11 +206,17 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         instance.save()
 
         for child_data in children_data:
-            child_id = child_data.pop("id")
-            child, created = Category.objects.get_or_create(id=child_id)
-            for attr, value in child_data.items():
-                setattr(child, attr, value)
-            child.parent = instance
-            child.save()
+            child_id = child_data.pop("id", None)
+            if child_id:
+                # Mavjud childni yangilash
+                child = Category.objects.get(id=child_id)
+                for attr, value in child_data.items():
+                    setattr(child, attr, value)
+                child.parent = instance
+                child.save()
+                # existing_child_ids.remove(child_id)
+            else:
+                # Yangi childni yaratish
+                Category.objects.create(**child_data, parent=instance)
 
         return instance

@@ -7,7 +7,19 @@ from .models import Banner, Product
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = "__all__"
+        # fields = "__all__"
+        fields = ('id', 
+                  'image', 
+                  'gif', 
+                  'name', 
+                  'description', 
+                  'price', 
+                  'created', 
+                  'updated', 
+                  'prepare_time', 
+                  'is_active', 
+                  'category')
+
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -51,4 +63,5 @@ class ProductSerializerForUrl(serializers.ModelSerializer):
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
-        fields = "__all__"
+        # fields = "__all__"
+        fields = ('id', 'title', 'summary', 'image', 'video', 'body', 'is_active')

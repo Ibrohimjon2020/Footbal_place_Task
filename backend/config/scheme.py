@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.urls import path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -15,7 +16,8 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    url=settings.DOMAIN_NAME,
+    permission_classes=[permissions.AllowAny],
 )
 
 swagger_urlpatterns = [

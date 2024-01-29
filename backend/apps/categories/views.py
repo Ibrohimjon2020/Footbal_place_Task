@@ -12,7 +12,7 @@ from .serializers import CategoryCreateSerializer, CategorySerializer, CategoryP
 
 class CategoryViewSet(viewsets.ModelViewSet):
     # queryset = Category.objects.prefetch_related("cat_products").all()
-    queryset = Category.objects.prefetch_related("cat_products").order_by('-id').all()
+    queryset = Category.objects.prefetch_related("cat_products").order_by('order', '-id').all()
 
     # serializer_class = CategorySerializer
 

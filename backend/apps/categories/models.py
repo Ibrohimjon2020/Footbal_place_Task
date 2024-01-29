@@ -17,6 +17,7 @@ class Category(models.Model):
     image = models.ImageField(upload_to="category_images", blank=True, null=True)
     head_name = models.CharField(max_length=100, null=True, blank=True)
     hashtag_name = models.CharField(max_length=100, null=True, blank=True)
+    order = models.PositiveIntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

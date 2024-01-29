@@ -233,7 +233,6 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
 
 
 class CategoryParentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
         fields = [
@@ -244,3 +243,16 @@ class CategoryParentSerializer(serializers.ModelSerializer):
             "created",
             "updated",
         ]
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        # Image URL tekshiruvi
+        if instance.image and hasattr(instance.image, "url"):
+            domain_name = settings.DOMAIN_NAME
+            full_path = domain_name + instance.image.url
+            representation["image"] = full_path
+        else:
+            representation["image"] = None
+
+        return representation

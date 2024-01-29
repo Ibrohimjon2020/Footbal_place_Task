@@ -13,7 +13,7 @@ from .serializers import CategoryCreateSerializer, CategorySerializer, CategoryP
 class CategoryViewSet(viewsets.ModelViewSet):
     # queryset = Category.objects.prefetch_related("cat_products").all()
     queryset = Category.objects.prefetch_related("cat_products").order_by('order', '-id').all()
-
+    filterset_fields = ['parent',]
     # serializer_class = CategorySerializer
 
     @swagger_auto_schema(

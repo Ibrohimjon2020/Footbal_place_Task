@@ -267,7 +267,6 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         if children_data:
             try:
                 children_data = json.loads(children_data)
-                print(children_data, "updat kirdi")
                 data.setlist("children", children_data)
             except json.JSONDecodeError:
                 raise serializers.ValidationError({"children": "Invalid JSON format"})
@@ -286,7 +285,6 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         children_data = validated_data.pop("children", [])
-        print(children_data, "updated")
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()

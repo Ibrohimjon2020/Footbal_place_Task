@@ -238,6 +238,7 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "image",
             "name_uz",
             "name_ru",
             "description",
@@ -259,6 +260,20 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
             "children",
         ]
 
+    def to_internal_value(self, data):
+        import json
+
+        children_data = data.get("children")
+        if children_data:
+            try:
+                children_data = json.loads(children_data)
+                print(children_data, "updat kirdi")
+                data.setlist("children", children_data)
+            except json.JSONDecodeError:
+                raise serializers.ValidationError({"children": "Invalid JSON format"})
+
+        return super().to_internal_value(data)
+
     def create(self, validated_data):
         children_data = validated_data.pop("children", [])
         category = Category.objects.create(**validated_data)
@@ -271,7 +286,7 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         children_data = validated_data.pop("children", [])
-
+        print(children_data, "updated")
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()

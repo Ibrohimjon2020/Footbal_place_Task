@@ -5,10 +5,15 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, views, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import Category
-from .serializers import (CategoryCreateSerializer, CategoryParentSerializer,
-                          CategorySerializer, CategorySerializerForAdminOnly)
+from .serializers import (
+    CategoryCreateSerializer,
+    CategoryParentSerializer,
+    CategorySerializer,
+    CategorySerializerForAdminOnly,
+)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -96,9 +101,10 @@ class CategoryViewSetForAdminOnly(viewsets.ModelViewSet):
     filterset_fields = [
         "parent",
     ]
+    parser_classes = [MultiPartParser, FormParser]
 
     # serializer_class = CategorySerializer
-
+    
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter(

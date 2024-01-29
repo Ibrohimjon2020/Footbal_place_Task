@@ -230,3 +230,17 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
                 Category.objects.create(**child_data, parent=instance)
 
         return instance
+
+
+class CategoryParentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = [
+            "id",
+            "name",
+            "title",
+            "image",
+            "created",
+            "updated",
+        ]

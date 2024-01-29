@@ -100,11 +100,11 @@ class BannerViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk,  *args, **kwargs):
         instance = self.get_object()
-        print(instance)
+        # print(instance)
         serializer = self.get_serializer(instance, data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        if request.data.get("is_active") == 'true':
+        # serializer.save()
+        if request.data.get("is_active") == True:
             update = Banner.objects.update(is_active=False)
         self.perform_update(serializer)
 

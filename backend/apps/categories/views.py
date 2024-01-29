@@ -13,7 +13,8 @@ from .serializers import CategoryCreateSerializer, CategorySerializer, CategoryP
 class CategoryViewSet(viewsets.ModelViewSet):
     # queryset = Category.objects.prefetch_related("cat_products").all()
     queryset = Category.objects.prefetch_related("cat_products").order_by('order', '-id').all()
-    filterset_fields = ['parent',]
+    filterset_fields = ['parent', ]
+
     # serializer_class = CategorySerializer
 
     @swagger_auto_schema(
@@ -39,7 +40,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         ]
     )
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
+        queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

@@ -1,9 +1,7 @@
 from django.contrib import admin
-
-from .models import Category
-
 from modeltranslation.admin import TranslationAdmin
 
+from .models import Category
 
 # Register your models here.
 

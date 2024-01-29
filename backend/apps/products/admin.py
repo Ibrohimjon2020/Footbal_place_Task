@@ -1,8 +1,7 @@
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
 
 from .models import Banner, Product
-
-from modeltranslation.admin import TranslationAdmin
 
 # Register your models here.
 

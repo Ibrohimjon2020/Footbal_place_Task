@@ -123,6 +123,18 @@ class ProductForUrlListView(generics.ListAPIView):
 
 
 class BannerViewSet(viewsets.ModelViewSet):
-    # queryset = Banner.objects.all()
-    queryset = Banner.objects.filter(is_active=True).order_by('-id')
+    queryset = Banner.objects.order_by('-id').all()
+    # queryset = Banner.objects.filter(is_active=True).order_by('-id')
     serializer_class = BannerSerializer
+
+    def update(self, request, pk,  *args, **kwargs):
+        instance = self.get_object()
+        print(instance)
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        if request.data.get("is_active") == 'true':
+            update = Banner.objects.update(is_active=False)
+        self.perform_update(serializer)
+
+        return super().list(request, *args, **kwargs)

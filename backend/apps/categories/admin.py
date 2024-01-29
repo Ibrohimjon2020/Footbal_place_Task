@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import Category
 
@@ -14,4 +15,11 @@ from modeltranslation.admin import TranslationAdmin
 
 @admin.register(Category)
 class CategoryAdmin(TranslationAdmin):
-    list_display = ('name', 'parent', 'description', 'title', 'order', 'head_name', 'hashtag_name')
+    list_display = ('image_tag', 'name', 'parent', 'description', 'title', 'order',)
+
+    def image_tag(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="max-height: 80px; width: 200px; object-fit: contain;" />'.format(obj.image.url))
+        else:
+            return None

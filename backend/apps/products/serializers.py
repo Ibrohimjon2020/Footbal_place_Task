@@ -40,6 +40,10 @@ class ProductSerializer(serializers.ModelSerializer):
 
         return representation
 
+class ProductCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = "__all__"
 
 class ProductSerializerForUrl(serializers.ModelSerializer):
     class Meta:
@@ -63,5 +67,9 @@ class ProductSerializerForUrl(serializers.ModelSerializer):
 class BannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banner
-        # fields = "__all__"
         fields = ('id', 'title', 'summary', 'image', 'video', 'body', 'is_active')
+
+class BannerCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banner
+        fields = "__all__"

@@ -9,7 +9,7 @@ from rest_framework import generics
 
 from .filters import ProductFilter
 from .models import Banner, Product
-from .serializers import BannerSerializer, ProductSerializer, ProductSerializerForUrl
+from .serializers import BannerSerializer, BannerCreateSerializer, ProductSerializer, ProductCreateSerializer, ProductSerializerForUrl
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -81,40 +81,11 @@ class ProductViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(category_id__in=child_ids)
 
         return queryset
-
-    # def list(self, request, *args, **kwargs):
-    #     params = self.request.query_params
-
-    #     if params.get("all") == "true":
-    #         # Barcha mahsulotlarni qaytarish (paginationni o'chirib)
-    #         queryset = Product.objects.all()
-    #         page = self.paginate_queryset(queryset)
-    #         if page is not None:
-    #             serializer = self.get_serializer(page, many=True)
-    #             return self.get_paginated_response(serializer.data)
-    #         serializer = self.get_serializer(queryset, many=True)
-    #     pattern_category = params.get("category")
-    #     if pattern_category:
-    #         try:
-    #             category = Category.objects.get(pk=pattern_category)
-    #             if category.childeren.exists():
-    #                 categories = Category.objects.filter(parent=category)
-    #                 queryset = Product.objects.filter(category__in=categories)
-    #                 # Bu yerda ham pagination qo'llanishi kerak
-    #                 page = self.paginate_queryset(queryset)
-    #                 if page is not None:
-    #                     serializer = self.get_serializer(page, many=True)
-    #                     return self.get_paginated_response(serializer.data)
-    #                 serializer = self.get_serializer(queryset, many=True)
-    #                 return views.Response(serializer.data)
-    #         except Category.DoesNotExist:
-    #             return views.Response(
-    #                 []
-    #             )  # Agar kategoriya topilmasa, bo'sh ro'yxat qaytarish
-
-    #     # Agar maxsus parametrlar bo'lmasa, standart list metodini ishlatish
-    #     return super().list(request, *args, **kwargs)
-
+    
+    def get_serializer_class(self):
+        if self.action in ["list", "retrieve"]:
+            return ProductSerializer
+        return ProductCreateSerializer
 
 class ProductForUrlListView(generics.ListAPIView):
     queryset = Product.objects.all()
@@ -138,3 +109,8 @@ class BannerViewSet(viewsets.ModelViewSet):
         self.perform_update(serializer)
 
         return super().list(request, *args, **kwargs)
+    
+    def get_serializer_class(self):
+        if self.action in ["list", "retrieve"]:
+            return BannerSerializer
+        return BannerCreateSerializer

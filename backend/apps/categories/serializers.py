@@ -232,6 +232,7 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         queryset=Category.objects.all(), required=False
     )
     children = serializers.ListField(write_only=True, required=False)
+    image = serializers.ImageField(required=False)
 
     class Meta:
         model = Category
@@ -263,6 +264,7 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
         import json
 
+        data = data.copy()
         children_data = data.get("children")
         if children_data:
             try:

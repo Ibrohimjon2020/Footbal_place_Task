@@ -5,7 +5,7 @@ from .views import CategoryViewSet, CategoryViewSetForAdminOnly
 
 router = DefaultRouter()
 router.register(r"categories", CategoryViewSet)
-router.register(r"admin/categories", CategoryViewSetForAdminOnly)
+router.register(r"admin/categories", CategoryViewSetForAdminOnly,basename="admin-categories")
 
 urlpatterns = [
     path("", include(router.urls)),

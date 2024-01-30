@@ -1,5 +1,7 @@
-from modeltranslation.translator import translator, TranslationOptions
-from .models import Product, Banner
+from modeltranslation.translator import TranslationOptions, translator
+
+from .models import Banner, Product
+
 
 # for Person model
 class ProductTranslationOptions(TranslationOptions):

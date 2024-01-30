@@ -16,7 +16,8 @@ from modeltranslation.admin import TranslationAdmin
 @admin.register(Category)
 class CategoryAdmin(TranslationAdmin):
     list_display = ('image_tag', 'name', 'parent', 'description', 'title', 'order',)
-
+    list_editable = ('order',)
+    # ordering = ('id',)
     def image_tag(self, obj):
         if obj.image:
             return format_html(

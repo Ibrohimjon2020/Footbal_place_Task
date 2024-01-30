@@ -7,7 +7,7 @@ from .views import (BannerViewSet, ProductForUrlListView, ProductViewSet,
 router = DefaultRouter()
 router.register(r"products", ProductViewSet)
 router.register(r"banners", BannerViewSet)
-router.register(r"admin/product", ProductViewSetAdmin)
+router.register(r"admin/product", ProductViewSetAdmin,basename="admin-products")
 
 
 urlpatterns = [

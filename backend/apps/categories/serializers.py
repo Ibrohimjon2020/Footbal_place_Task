@@ -233,13 +233,12 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
     )
     children = serializers.ListField(write_only=True, required=False)
     image = serializers.ImageField(required=False)
-
+    image_clear = serializers.BooleanField(required=False)
     class Meta:
         model = Category
         fields = [
             "id",
             "name",
-            "image",
             "name_uz",
             "name_ru",
             "description",
@@ -259,11 +258,11 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
             "created",
             "updated",
             "children",
+            "image_clear",
         ]
 
     def to_internal_value(self, data):
         import json
-
         data = data.copy()
         children_data = data.get("children")
         if children_data:
@@ -272,11 +271,11 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
                 data.setlist("children", children_data)
             except json.JSONDecodeError:
                 raise serializers.ValidationError({"children": "Invalid JSON format"})
-
         return super().to_internal_value(data)
 
     def create(self, validated_data):
         children_data = validated_data.pop("children", [])
+        image_clear = validated_data.pop("image_clear")
         category = Category.objects.create(**validated_data)
 
         for child_data in children_data:
@@ -287,7 +286,10 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         children_data = validated_data.pop("children", [])
+        image_clear = validated_data.get("image_clear")
         for attr, value in validated_data.items():
+            if image_clear:
+                instance.image.delete(save=False)
             setattr(instance, attr, value)
         instance.save()
 

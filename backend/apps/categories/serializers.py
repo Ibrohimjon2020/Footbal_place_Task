@@ -1,4 +1,4 @@
-# serializers.py
+import json
 from apps.products.models import Product
 from django.conf import settings
 from rest_framework import serializers
@@ -262,7 +262,7 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         ]
 
     def to_internal_value(self, data):
-        import json
+        
         data = data.copy()
         children_data = data.get("children")
         if children_data:

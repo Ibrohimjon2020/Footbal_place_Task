@@ -30,7 +30,7 @@ class CustomUserAdmin(UserAdmin):
                 )
             },
         ),
-        ("Permissions", {"fields": ("is_staff", "is_active", "is_superuser")}),
+        ("Permissions", {"fields": ("is_staff", "is_active", "is_superuser", "groups")}),
     )
     add_fieldsets = (
         (

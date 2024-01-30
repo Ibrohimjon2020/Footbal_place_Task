@@ -29,7 +29,7 @@ class Category(models.Model):
         descendants = []
         if include_self:
             descendants.append(self)
-        for child in Category.objects.filter(parent=self):
+        for child in Category.objects.filter(parent=self).order_by('order'):
             descendants.extend(child.get_descendants(include_self=True))
         return descendants
 

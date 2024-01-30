@@ -19,7 +19,7 @@ from .serializers import (
 class CategoryViewSet(viewsets.ModelViewSet):
     # queryset = Category.objects.prefetch_related("cat_products").all()
     queryset = (
-        Category.objects.prefetch_related("cat_products").order_by("order", "-id").all()
+        Category.objects.prefetch_related("cat_products").all().order_by("order")
     )
     filterset_fields = [
         "parent",

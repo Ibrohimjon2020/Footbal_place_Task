@@ -11,11 +11,15 @@ class CustomUserAdmin(UserAdmin):
     model = User
     list_display = (
         "phone_number",
+        "first_name",
+        "role",
         "is_staff",
         "is_active",
     )
     list_filter = (
         "phone_number",
+        "first_name",
+        "role",
         "is_staff",
         "is_active",
     )
@@ -30,6 +34,12 @@ class CustomUserAdmin(UserAdmin):
                 )
             },
         ),
+        (
+            "Personal Info", 
+            {
+                "fields": ("first_name", "role"),
+            },
+        ),
         ("Permissions", {"fields": ("is_staff", "is_active", "is_superuser", "groups")}),
     )
     add_fieldsets = (
@@ -38,6 +48,8 @@ class CustomUserAdmin(UserAdmin):
             {
                 "classes": ("wide",),
                 "fields": (
+                    "first_name", 
+                    "role",
                     "phone_number",
                     "password1",
                     "password2",
